@@ -7,7 +7,7 @@ import Layout from "./components/Layout";
 
 const App = () => {
   return (
-    <BrowserRouter basename="/frontend-test">
+    <HashRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<Homepage />} />
@@ -17,7 +17,7 @@ const App = () => {
           <Route path="*" element={<Homepage />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
