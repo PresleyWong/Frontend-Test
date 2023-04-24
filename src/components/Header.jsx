@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   AppBar,
+  Badge,
   Box,
   Container,
   IconButton,
@@ -10,7 +11,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AndroidIcon from "@mui/icons-material/Android";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ import {
   clearCredentials,
   selectCurrentUser,
 } from "../redux/features/auth/authSlice";
+import Searchbar from "./Searchbar";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -103,26 +105,14 @@ const Header = () => {
     <AppBar position="fixed">
       <Container>
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: "flex" }}>
-            <IconButton
-              size="large"
-              aria-label="Menu"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={() => {}}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <AndroidIcon />
+          <AndroidIcon sx={{ display: "flex", mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
             component={RouterLink}
             to="/"
             sx={{
-              ml: 2,
+              mr: 2,
               display: "flex",
               flexGrow: 1,
               fontFamily: "monospace",
@@ -135,7 +125,23 @@ const Header = () => {
             Shop
           </Typography>
 
-          {userButton()}
+          <Searchbar />
+
+          <Box
+            sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}
+          >
+            <IconButton
+              component={RouterLink}
+              to="/cart"
+              sx={{ mr: "10px", color: "white" }}
+            >
+              <Badge badgeContent={4} color="secondary">
+                <LocalMallOutlinedIcon />
+              </Badge>
+            </IconButton>
+
+            {userButton()}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
