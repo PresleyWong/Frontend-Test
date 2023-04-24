@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 import { setCredentials } from "../redux/features/auth/authSlice";
 import { useLoginMutation } from "../redux/api/authApi";
-import Spinner from "../components/Spinner";
 
 const Login = () => {
   const refUsername = useRef(null);
@@ -26,7 +25,6 @@ const Login = () => {
       dispatch(setCredentials(user));
       navigate("/");
     } catch (err) {
-      debugger;
       alert(err.data.message);
     }
   };
