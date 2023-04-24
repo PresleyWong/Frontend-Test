@@ -10,25 +10,36 @@ import {
   Button,
   Menu,
   MenuItem,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Drawer,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+import { setProductItems } from "../redux/features/product/productSlice";
 import { getTotals } from "../redux/features/cart/cartSlice";
 import {
   clearCredentials,
   selectCurrentUser,
 } from "../redux/features/auth/authSlice";
 import Searchbar from "./Searchbar";
+import { useGetAllProductCategoriesQuery } from "../redux/api/productApi";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [drawer, setDrawer] = useState(false);
   const { cartTotalQuantity, cartItems } = useSelector((state) => state.cart);
   const currentUser = useSelector(selectCurrentUser);
+  const { data: dataCategories } = useGetAllProductCategoriesQuery();
 
   useEffect(() => {
     dispatch(getTotals());
@@ -52,6 +63,56 @@ const Header = () => {
     navigate("/");
     window.location.reload(false);
   };
+
+  const handleSelection = (category, closeMenu = false) => {
+    fetch(`https://dummyjson.com/products/category/${category}?limit=10`)
+      .then((res) => res.json())
+      .then((res) => {
+        dispatch(setProductItems(res.products));
+      });
+
+    if (closeMenu) {
+      handleCloseNavMenu();
+    }
+  };
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawer(open);
+  };
+
+  const drawerList = () => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        {dataCategories?.map((item, index) => (
+          <span key={index}>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleSelection(item)}>
+                <ListItemText
+                  primary={item}
+                  sx={{
+                    fontWeight: 400,
+                    textTransform: "uppercase",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </span>
+        ))}
+      </List>
+    </Box>
+  );
 
   const userButton = () => {
     if (currentUser) {
@@ -115,6 +176,23 @@ const Header = () => {
     <AppBar position="fixed">
       <Container>
         <Toolbar disableGutters>
+          <Box sx={{ flexGrow: 1, display: "flex" }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={toggleDrawer(true)}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+
+            <Drawer anchor="left" open={drawer} onClose={toggleDrawer(false)}>
+              {drawerList()}
+            </Drawer>
+          </Box>
+
           <Typography
             variant="h5"
             noWrap
