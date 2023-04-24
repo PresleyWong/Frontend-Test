@@ -1,8 +1,37 @@
+import { useRef, useMemo, useEffect } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { InputBase, Typography, IconButton } from "@mui/material";
+import { InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import debounce from "lodash.debounce";
+import { useDispatch } from "react-redux";
+import { setProductItems } from "../redux/features/product/productSlice";
 
 const Searchbar = () => {
+  const refSearch = useRef(null);
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    if (refSearch.current.value != "") {
+      fetch(
+        `https://dummyjson.com/products/search?q=${refSearch.current.value}&limit=10`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          dispatch(setProductItems(res.products));
+        });
+    }
+  };
+
+  const debouncedResults = useMemo(() => {
+    return debounce(handleChange, 500);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
+
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -51,6 +80,8 @@ const Searchbar = () => {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+        inputRef={refSearch}
+        onChange={debouncedResults}
       />
     </Search>
   );

@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AndroidIcon from "@mui/icons-material/Android";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -47,6 +46,11 @@ const Header = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleNavigateHomepage = () => {
+    navigate("/");
+    window.location.reload(false);
   };
 
   const userButton = () => {
@@ -111,12 +115,10 @@ const Header = () => {
     <AppBar position="fixed">
       <Container>
         <Toolbar disableGutters>
-          <AndroidIcon sx={{ display: "flex", mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
-            component={RouterLink}
-            to="/"
+            onClick={handleNavigateHomepage}
             sx={{
               mr: 2,
               display: "flex",
@@ -126,6 +128,7 @@ const Header = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             Shop
