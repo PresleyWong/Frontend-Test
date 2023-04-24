@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { Box, Typography, Button, Rating, Stack } from "@mui/material";
+import { useDispatch } from "react-redux";
 
+import { addToCart } from "../redux/features/cart/cartSlice";
 import { useGetProductDetailQuery } from "../redux/api/productApi";
 import Spinner from "../components/Spinner";
 
@@ -8,12 +10,15 @@ const ProductDetail = () => {
   const { productId } = useParams();
   const { data, isSuccess, isError, error } =
     useGetProductDetailQuery(productId);
-
+  const dispatch = useDispatch();
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
   let content;
 
   if (isSuccess) {
     content = (
-      <Stack direction="column">
+      <Stack direction="column" p={5}>
         <img width="100%" src={data.thumbnail} alt={productId.title} />
         <Box
           sx={{
@@ -75,6 +80,7 @@ const ProductDetail = () => {
           </Typography>
         </Box>
         <Button
+          onClick={() => handleAddToCart(data)}
           variant="contained"
           sx={{
             backgroundColor: "#673ab7",

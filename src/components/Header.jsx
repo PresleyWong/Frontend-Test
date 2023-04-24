@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AppBar,
   Badge,
@@ -15,8 +15,9 @@ import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AndroidIcon from "@mui/icons-material/Android";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-
 import { useSelector, useDispatch } from "react-redux";
+
+import { getTotals } from "../redux/features/cart/cartSlice";
 import {
   clearCredentials,
   selectCurrentUser,
@@ -27,7 +28,12 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const { cartTotalQuantity, cartItems } = useSelector((state) => state.cart);
   const currentUser = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    dispatch(getTotals());
+  }, [cartItems, dispatch]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -135,7 +141,7 @@ const Header = () => {
               to="/cart"
               sx={{ mr: "10px", color: "white" }}
             >
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cartTotalQuantity} color="secondary">
                 <LocalMallOutlinedIcon />
               </Badge>
             </IconButton>

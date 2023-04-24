@@ -11,8 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/features/cart/cartSlice";
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
+  const handleAddToCart = (item) => {
+    dispatch(addToCart(item));
+  };
+
   return (
     <Card sx={{ maxWidth: 400 }}>
       <RouterLink
@@ -58,6 +65,7 @@ const ProductCard = ({ product }) => {
         </Typography>
 
         <Button
+          onClick={() => handleAddToCart(product)}
           variant="contained"
           sx={{
             backgroundColor: "#673ab7",
