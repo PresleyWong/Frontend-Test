@@ -34,7 +34,7 @@ const Searchbar = () => {
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "100%",
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up("xs")]: {
         width: "12ch",
         "&:focus": {
           width: "20ch",
