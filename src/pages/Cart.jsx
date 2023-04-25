@@ -123,7 +123,11 @@ const Cart = () => {
 
               <TableRow sx={{ borderBottom: "none" }}>
                 <TableCell>
-                  <Button variant="outlined" onClick={() => handleClearCart()}>
+                  <Button
+                    variant="outlined"
+                    size={"small"}
+                    onClick={() => handleClearCart()}
+                  >
                     Clear
                   </Button>
                 </TableCell>

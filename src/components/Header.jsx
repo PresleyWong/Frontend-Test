@@ -60,8 +60,15 @@ const Header = () => {
   };
 
   const handleNavigateHomepage = () => {
-    navigate("/");
-    window.location.reload(false);
+    if (window.location.hash !== "#/") {
+      navigate("/");
+    }
+
+    fetch("https://dummyjson.com/products?limit=10")
+      .then((res) => res.json())
+      .then((res) => {
+        dispatch(setProductItems(res.products));
+      });
   };
 
   const handleSelection = (category, closeMenu = false) => {
@@ -73,6 +80,10 @@ const Header = () => {
 
     if (closeMenu) {
       handleCloseNavMenu();
+    }
+
+    if (window.location.hash !== "#/products") {
+      navigate("/products");
     }
   };
 
@@ -196,6 +207,8 @@ const Header = () => {
           <Typography
             variant="h5"
             noWrap
+            // to="/"
+            // component={RouterLink}
             onClick={handleNavigateHomepage}
             sx={{
               mr: 2,
