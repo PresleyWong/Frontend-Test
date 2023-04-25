@@ -1,9 +1,12 @@
+import { useSearchParams } from "react-router-dom";
+import { useGetProductSearchQuery } from "../redux/api/productApi";
 import ProductListing from "../components/ProductListing";
-import { useGetProductsQuery } from "../redux/api/productApi";
 import Spinner from "../components/Spinner";
 
-const Homepage = () => {
-  const { data, isLoading, isSuccess, isError, error } = useGetProductsQuery();
+const SearchPage = () => {
+  const [searchParams] = useSearchParams();
+  const { data, isLoading, isSuccess, isError, error } =
+    useGetProductSearchQuery(searchParams.get("q"));
   let content = "";
 
   if (isSuccess) {
@@ -17,4 +20,4 @@ const Homepage = () => {
   return content;
 };
 
-export default Homepage;
+export default SearchPage;

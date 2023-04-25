@@ -23,23 +23,29 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { setProductItems } from "../redux/features/product/productSlice";
 import { getTotals } from "../redux/features/cart/cartSlice";
 import {
   clearCredentials,
   selectCurrentUser,
+  selectCurrentToken,
 } from "../redux/features/auth/authSlice";
 import Searchbar from "./Searchbar";
 import { useGetAllProductCategoriesQuery } from "../redux/api/productApi";
 
 const Header = () => {
+  const { data: dataCategories } = useGetAllProductCategoriesQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [drawer, setDrawer] = useState(false);
   const { cartTotalQuantity, cartItems } = useSelector((state) => state.cart);
   const currentUser = useSelector(selectCurrentUser);
-  const { data: dataCategories } = useGetAllProductCategoriesQuery();
+  const token = useSelector(selectCurrentToken);
+
+  let headers = {};
+  if (token) {
+    headers = { Authorization: `Bearer ${token}` };
+  }
 
   useEffect(() => {
     dispatch(getTotals());
@@ -59,32 +65,12 @@ const Header = () => {
     setAnchorElNav(null);
   };
 
-  const handleNavigateHomepage = () => {
-    if (window.location.hash !== "#/") {
-      navigate("/");
-    }
-
-    fetch("https://dummyjson.com/products?limit=10")
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(setProductItems(res.products));
-      });
-  };
-
   const handleSelection = (category, closeMenu = false) => {
-    fetch(`https://dummyjson.com/products/category/${category}?limit=10`)
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(setProductItems(res.products));
-      });
-
     if (closeMenu) {
       handleCloseNavMenu();
     }
 
-    if (window.location.hash !== "#/products") {
-      navigate("/products");
-    }
+    navigate(`/products/category/${category}`);
   };
 
   const toggleDrawer = (open) => (event) => {
@@ -207,9 +193,9 @@ const Header = () => {
           <Typography
             variant="h5"
             noWrap
-            // to="/"
-            // component={RouterLink}
-            onClick={handleNavigateHomepage}
+            to="/"
+            component={RouterLink}
+            // onClick={handleNavigateHomepage}
             sx={{
               mr: 2,
               display: "flex",
@@ -225,7 +211,7 @@ const Header = () => {
             Shop
           </Typography>
 
-          <Searchbar />
+          <Searchbar token={token} />
 
           <Box
             sx={{ display: "flex", flexGrow: 1, justifyContent: "flex-end" }}

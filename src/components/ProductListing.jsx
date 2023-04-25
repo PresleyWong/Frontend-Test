@@ -12,19 +12,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import ProductCard from "../components/ProductCard";
+import ProductCard from "./ProductCard";
 import {
   setProductSortType,
-  selectCurrentProductItems,
   selectCurrentProductSortType,
-  selectCurrentProductLoading,
 } from "../redux/features/product/productSlice";
-import Spinner from "../components/Spinner";
 
-const ProductListing = () => {
-  const currentProductItems = useSelector(selectCurrentProductItems);
+const ProductListing = ({ products }) => {
+  const currentProductItems = products;
   const currentProductSortType = useSelector(selectCurrentProductSortType);
-  const isLoading = useSelector(selectCurrentProductLoading);
   const [sortProduct, setSortProduct] = useState([]);
   const dispatch = useDispatch();
 
@@ -76,56 +72,49 @@ const ProductListing = () => {
     dispatch(setProductSortType(event.target.value));
   };
 
-  let content;
-  if (isLoading) {
-    content = <Spinner />;
-  } else {
-    content = (
-      <>
-        <Box
-          sx={{ display: "flex", direction: "row", justifyContent: "flex-end" }}
-        >
-          <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
-            <InputLabel id="select-sort-label">Sort by</InputLabel>
-            <Select
-              labelId="select-sort-label"
-              id="select-sort"
-              value={currentProductSortType}
-              label="Sort by"
-              onChange={handleSortChange}
-            >
-              <MenuItem value={"relevence"}>Relevance</MenuItem>
-              <MenuItem value={"lowToHigh"}>Price: Low to High</MenuItem>
-              <MenuItem value={"highToLow"}>Price: High to Low</MenuItem>
-              <MenuItem value={"AZ"}>A ~ Z</MenuItem>
-              <MenuItem value={"ZA"}>Z ~ A</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+  return (
+    <>
+      <Box
+        sx={{ display: "flex", direction: "row", justifyContent: "flex-end" }}
+      >
+        <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
+          <InputLabel id="select-sort-label">Sort by</InputLabel>
+          <Select
+            labelId="select-sort-label"
+            id="select-sort"
+            value={currentProductSortType}
+            label="Sort by"
+            onChange={handleSortChange}
+          >
+            <MenuItem value={"relevence"}>Relevance</MenuItem>
+            <MenuItem value={"lowToHigh"}>Price: Low to High</MenuItem>
+            <MenuItem value={"highToLow"}>Price: High to Low</MenuItem>
+            <MenuItem value={"AZ"}>A ~ Z</MenuItem>
+            <MenuItem value={"ZA"}>Z ~ A</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
 
-        <Stack
-          direction="column"
-          sx={{
-            alignItems: "center",
-          }}
-        >
-          {sortProduct.length === 0 ? (
-            <Typography variant="subtitle1">No product found</Typography>
-          ) : (
-            <List>
-              {sortProduct.map((item) => (
-                <ListItem key={item.id} sx={{ py: 2 }}>
-                  <ProductCard product={item} />
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </Stack>
-      </>
-    );
-  }
-
-  return content;
+      <Stack
+        direction="column"
+        sx={{
+          alignItems: "center",
+        }}
+      >
+        {sortProduct.length === 0 ? (
+          <Typography variant="subtitle1">No product found</Typography>
+        ) : (
+          <List>
+            {sortProduct.map((item) => (
+              <ListItem key={item.id} sx={{ py: 2 }}>
+                <ProductCard product={item} />
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Stack>
+    </>
+  );
 };
 
 export default ProductListing;

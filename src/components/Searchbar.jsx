@@ -5,33 +5,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
-import {
-  setProductItems,
-  setProductLoading,
-} from "../redux/features/product/productSlice";
-
 const Searchbar = () => {
   const refSearch = useRef(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     if (refSearch.current.value != "") {
-      dispatch(setProductLoading(true));
-      fetch(
-        `https://dummyjson.com/products/search?q=${refSearch.current.value}&limit=10`
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          dispatch(setProductItems(res.products));
-          dispatch(setProductLoading(false));
-        })
-        .then(() => {
-          if (window.location.hash !== "#/products") {
-            navigate("/products");
-          }
-        });
+      navigate(`/products/search?q=${refSearch.current.value}`);
     }
   };
 
