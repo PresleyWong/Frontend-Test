@@ -1,6 +1,6 @@
 ## Question 1
 
-- [Code](question#1.js)
+- [Code](https://github.com/PresleyWong/Frontend-Test/blob/main/question%231.js)
 
 ### How to run:
 
@@ -8,12 +8,16 @@
 
 ## Question 2
 
-- [Demo](https://presleywong.github.io/Frontend-Test/).
+- [Demo](https://presleywong.github.io/Frontend-Test/)
 
-![Products Page](images/products.png)
-![Cart Page](images/cart.png)
-![Login Page](images/login.png)
-![Products Categories](images/category.png)
+- Product Page:
+  ![Products Page](images/products.png)
+- Cart Page:
+  ![Cart Page](images/cart.png)
+- Login Page:
+  ![Login Page](images/login.png)
+- Category:
+  ![Products Categories](images/category.png)
 
 ## References
 
