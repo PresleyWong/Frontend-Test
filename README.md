@@ -10,14 +10,12 @@
 
 - [Demo](https://presleywong.github.io/Frontend-Test/)
 
-- Product Page:
-  ![Products Page](images/products.png)
-- Cart Page:
-  ![Cart Page](images/cart.png)
-- Login Page:
-  ![Login Page](images/login.png)
-- Category:
-  ![Products Categories](images/category.png)
+### Screenshots:
+
+![Products Page](images/products.png)
+![Cart Page](images/cart.png)
+![Login Page](images/login.png)
+![Products Categories](images/category.png)
 
 ## References
 
