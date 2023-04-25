@@ -13,6 +13,8 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/features/cart/cartSlice";
+import ProgressiveImg from "./ProgressiveImg";
+import ImgPlaceholder from "../assets/img_placeholder.jpg";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
@@ -27,12 +29,13 @@ const ProductCard = ({ product }) => {
         style={{ textDecoration: "none" }}
       >
         <CardActionArea>
-          <CardMedia
-            component="img"
-            width="140"
-            image={product.thumbnail}
-            alt={product.title}
+          <ProgressiveImg
+            lowQualitySrc={ImgPlaceholder}
+            highQualitySrc={product.thumbnail}
+            img_alt={product.title}
+            img_width="140"
           />
+
           <CardContent>
             <Stack
               direction="column"
